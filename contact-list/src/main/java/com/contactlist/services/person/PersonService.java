@@ -12,10 +12,10 @@ public interface PersonService {
 
     public boolean deletePerson(Long id);
 
-    public List<Person> findByName(String name);
+    public List<Person> findPeopleByName(String name);
 
-    public List<Person> findByCity(String city);
+    public List<Person> findPeopleByCity(String city);
 
-    public List<Person> findByNameAndCity(String name, String city);
+    public List<Person> findPeopleByNameAndCities(String name, List<String> cities);
 
 }

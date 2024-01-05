@@ -1,6 +1,7 @@
 package com.contactlist.services.person;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -36,21 +37,37 @@ public class PersonServiceImpl implements PersonService{
     }
 
     @Override
-    public List<Person> findByName(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByName'");
+    public List<Person> findPeopleByName(String name) {
+        Optional<List<Person>> optionalPeopleList = personRepository.findByName(name);
+        if(optionalPeopleList.isPresent()){
+            return optionalPeopleList.get();
+        }else{
+            // Excepcion
+            return null;
+        }
     }
 
     @Override
-    public List<Person> findByCity(String city) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByCity'");
+    public List<Person> findPeopleByCity(String city) {
+       Optional<List<Person>> optionalPeopleList = personRepository.findByCity(city);
+        if(optionalPeopleList.isPresent()){
+            return optionalPeopleList.get();
+        }else{
+            // Excepcion
+            return null;
+        }
     }
 
     @Override
-    public List<Person> findByNameAndCity(String name, String city) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByNameAndCity'");
+    public List<Person> findPeopleByNameAndCities(String name, List<String> cities) {
+        Optional<List<Person>> optionalPeopleList = personRepository.findByNameAndCities(name, cities);
+        if(optionalPeopleList.isPresent()){
+            return optionalPeopleList.get();
+        }else{
+            // Excepcion
+            return null;
+        }
     }
+
 }
 
