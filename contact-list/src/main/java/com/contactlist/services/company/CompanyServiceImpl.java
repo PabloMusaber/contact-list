@@ -3,6 +3,8 @@ package com.contactlist.services.company;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.contactlist.entities.Company;
@@ -14,8 +16,9 @@ import com.contactlist.repositories.CompanyRepository;
 import com.contactlist.repositories.PersonRepository;
 
 @Service
-public class CompanyServiceImpl implements CompanyService{
+public class CompanyServiceImpl implements CompanyService {
 
+    private static final Logger log = LoggerFactory.getLogger(CompanyServiceImpl.class);
     private final CompanyRepository companyRepository;
     private final PersonRepository personRepository;
 
@@ -36,10 +39,11 @@ public class CompanyServiceImpl implements CompanyService{
 
     @Override
     public boolean deleteCompany(Long id) {
-        if(companyRepository.existsById(id)){
+        if (companyRepository.existsById(id)) {
             companyRepository.deleteById(id);
             return true;
         }
+        log.error("Company not found in deleteCompany method.");
         throw new CompanyNotFoundException("There is no company with id number " + id);
     }
 
@@ -48,12 +52,14 @@ public class CompanyServiceImpl implements CompanyService{
         Optional<Company> optionalCompany = companyRepository.findById(companyId);
         Optional<Person> optionalPerson = personRepository.findById(personId);
 
-        if(!optionalCompany.isPresent()){
-            throw new CompanyNotFoundException("The specified company does not exist");
+        if (!optionalCompany.isPresent()) {
+            log.error("Company not found in addContactToCompany method.");
+            throw new CompanyNotFoundException("The specified company does not exist.");
         }
 
-        if(!optionalPerson.isPresent()){
-            throw new PersonNotFoundException("The specified person does not exist");
+        if (!optionalPerson.isPresent()) {
+            log.error("Person not found in addContactToCompany method.");
+            throw new PersonNotFoundException("The specified person does not exist.");
         }
 
         Company company = optionalCompany.get();
@@ -65,7 +71,8 @@ public class CompanyServiceImpl implements CompanyService{
             company.setContacts(contacts);
             return companyRepository.save(company);
         } else {
-            throw new DuplicateContactException("The person is already a registered contact");
+            log.error("The person is already a registered contact.");
+            throw new DuplicateContactException("The person is already a registered contact.");
         }
     }
 
