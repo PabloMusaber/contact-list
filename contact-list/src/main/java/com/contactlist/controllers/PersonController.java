@@ -17,52 +17,52 @@ import com.contactlist.services.person.PersonService;
 import com.contactlist.entities.Person;
 
 @RestController
-@RequestMapping("/api/people")
+@RequestMapping("/api/people/")
 public class PersonController {
     private final PersonService personService;
 
-    public PersonController(PersonService personService){
+    public PersonController(PersonService personService) {
         this.personService = personService;
     }
 
     @PostMapping
-    public ResponseEntity<Person> newPerson(@RequestBody Person person){
+    public ResponseEntity<Person> newPerson(@RequestBody Person person) {
         Person newPerson = personService.newPerson(person);
         return new ResponseEntity<>(newPerson, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity <List<Person>> getPeople(){
+    public ResponseEntity<List<Person>> getPeople() {
         List<Person> contacts = personService.viewPeople();
         return new ResponseEntity<>(contacts, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{personId}")
-    public ResponseEntity<Void> deletePersonById(@PathVariable Long personId){
-        if(personService.deletePerson(personId)){
+    @DeleteMapping("{personId}")
+    public ResponseEntity<Void> deletePersonById(@PathVariable Long personId) {
+        if (personService.deletePerson(personId)) {
             return new ResponseEntity<>(HttpStatus.OK);
-        }else{
+        } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @GetMapping("/find-by-name/{name}")
-    public ResponseEntity <List<Person>> getPeopleByName(@PathVariable String name){
+    @GetMapping("find-by-name/{name}")
+    public ResponseEntity<List<Person>> getPeopleByName(@PathVariable String name) {
         List<Person> people = personService.findPeopleByName(name);
         return new ResponseEntity<>(people, HttpStatus.OK);
     }
 
-    @GetMapping("/find-by-city/{city}")
-    public ResponseEntity <List<Person>> getPeopleByCity(@PathVariable String city){
+    @GetMapping("find-by-city/{city}")
+    public ResponseEntity<List<Person>> getPeopleByCity(@PathVariable String city) {
         List<Person> people = personService.findPeopleByCity(city);
         return new ResponseEntity<>(people, HttpStatus.OK);
     }
 
-    @GetMapping("/find-by-name-and-cities/{name}")
+    @GetMapping("find-by-name-and-cities/{name}")
     public ResponseEntity<List<Person>> findPeopleByNameAndCities(@PathVariable String name,
-        @RequestParam List<String> cities) {
+            @RequestParam List<String> cities) {
         List<Person> people = personService.findPeopleByNameAndCities(name, cities);
-            return new ResponseEntity<>(people, HttpStatus.OK);
+        return new ResponseEntity<>(people, HttpStatus.OK);
     }
 
 }

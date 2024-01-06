@@ -17,7 +17,7 @@ import com.contactlist.entities.Company;
 import com.contactlist.services.company.CompanyService;
 
 @RestController
-@RequestMapping("/api/companies")
+@RequestMapping("/api/companies/")
 public class CompanyController {
 
     private final CompanyService companyService;
@@ -27,28 +27,28 @@ public class CompanyController {
     }
 
     @PostMapping
-    public ResponseEntity<Company> newCompany(@RequestBody Company company){
+    public ResponseEntity<Company> newCompany(@RequestBody Company company) {
         Company newCompany = companyService.newCompany(company);
         return new ResponseEntity<>(newCompany, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity <List<Company>> getCompanies(){
+    public ResponseEntity<List<Company>> getCompanies() {
         List<Company> companies = companyService.viewCompanies();
         return new ResponseEntity<>(companies, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{companyId}")
-    public ResponseEntity<Void> deletePersonById(@PathVariable Long companyId){
-        if(companyService.deleteCompany(companyId)){
+    @DeleteMapping("{companyId}")
+    public ResponseEntity<Void> deleteCompanyById(@PathVariable Long companyId) {
+        if (companyService.deleteCompany(companyId)) {
             return new ResponseEntity<>(HttpStatus.OK);
-        }else{
+        } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @PutMapping("/{companyId}/add-contact/{personId}")
-    public ResponseEntity<Company> addContact(@PathVariable Long companyId, @PathVariable Long personId){
+    @PutMapping("{companyId}/add-contact/{personId}")
+    public ResponseEntity<Company> addContact(@PathVariable Long companyId, @PathVariable Long personId) {
         Company updatedCompany = companyService.addContactToCompany(companyId, personId);
         if (updatedCompany != null) {
             return new ResponseEntity<>(updatedCompany, HttpStatus.OK);
