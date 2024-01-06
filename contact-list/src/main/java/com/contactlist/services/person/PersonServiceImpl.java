@@ -1,11 +1,11 @@
 package com.contactlist.services.person;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.contactlist.entities.Person;
+import com.contactlist.exceptions.PersonNotFoundException;
 import com.contactlist.repositories.PersonRepository;
 
 @Service
@@ -33,39 +33,36 @@ public class PersonServiceImpl implements PersonService{
             personRepository.deleteById(id);
             return true;
         }
-        return false;
+        throw new PersonNotFoundException("There is no person with id number " + id);
     }
 
     @Override
     public List<Person> findPeopleByName(String name) {
-        Optional<List<Person>> optionalPeopleList = personRepository.findByName(name);
-        if(optionalPeopleList.isPresent()){
-            return optionalPeopleList.get();
+        List<Person> peopleList = personRepository.findByName(name);
+        if(!peopleList.isEmpty()){
+            return peopleList;
         }else{
-            // Excepcion
-            return null;
+            throw new PersonNotFoundException("There is no contact with the name " + name);
         }
     }
 
     @Override
     public List<Person> findPeopleByCity(String city) {
-       Optional<List<Person>> optionalPeopleList = personRepository.findByCity(city);
-        if(optionalPeopleList.isPresent()){
-            return optionalPeopleList.get();
+       List<Person> peopleList = personRepository.findByCity(city);
+        if(!peopleList.isEmpty()){
+            return peopleList;
         }else{
-            // Excepcion
-            return null;
+            throw new PersonNotFoundException("There is no contact in the city " + city);
         }
     }
 
     @Override
     public List<Person> findPeopleByNameAndCities(String name, List<String> cities) {
-        Optional<List<Person>> optionalPeopleList = personRepository.findByNameAndCities(name, cities);
-        if(optionalPeopleList.isPresent()){
-            return optionalPeopleList.get();
+        List<Person> peopleList = personRepository.findByNameAndCities(name, cities);
+        if(!peopleList.isEmpty()){
+            return peopleList;
         }else{
-            // Excepcion
-            return null;
+            throw new PersonNotFoundException("There is no contact with the name " + name + " in the " + cities + " cities.");
         }
     }
 
