@@ -50,22 +50,13 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public Company addContactToCompany(Long companyId, Long personId) {
-        Optional<Company> optionalCompany = companyRepository.findById(companyId);
-        Optional<Person> optionalPerson = personRepository.findById(personId);
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new CompanyNotFoundException("The specified company does not exist."));
 
-        if (!optionalCompany.isPresent()) {
-            log.error("Company not found in addContactToCompany method.");
-            throw new CompanyNotFoundException("The specified company does not exist.");
-        }
+        Person person = personRepository.findById(personId)
+                .orElseThrow(() -> new PersonNotFoundException("The specified person does not exist."));
 
-        if (!optionalPerson.isPresent()) {
-            log.error("Person not found in addContactToCompany method.");
-            throw new PersonNotFoundException("The specified person does not exist.");
-        }
-
-        Company company = optionalCompany.get();
         List<Person> contacts = company.getContacts();
-        Person person = optionalPerson.get();
 
         if (contacts.contains(person)) {
             log.error("The person is already a registered contact.");
