@@ -8,6 +8,8 @@ public interface CompanyService {
 
     public List<Company> viewCompanies();
 
+    public Company getCompanyById(Long id);
+
     public Company newCompany(Company company);
 
     public boolean deleteCompany(Long id);

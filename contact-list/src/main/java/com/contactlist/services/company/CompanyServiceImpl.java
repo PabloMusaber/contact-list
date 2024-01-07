@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.contactlist.entities.Company;
@@ -66,14 +67,29 @@ public class CompanyServiceImpl implements CompanyService {
         List<Person> contacts = company.getContacts();
         Person person = optionalPerson.get();
 
-        if (!contacts.contains(person)) {
-            contacts.add(person);
-            company.setContacts(contacts);
-            return companyRepository.save(company);
-        } else {
+        if (contacts.contains(person)) {
             log.error("The person is already a registered contact.");
             throw new DuplicateContactException("The person is already a registered contact.");
         }
+
+        contacts.add(person);
+        company.setContacts(contacts);
+
+        try {
+            return companyRepository.save(company);
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicateContactException("The person already belongs to another company.");
+        }
+    }
+
+    @Override
+    public Company getCompanyById(Long id) {
+        Optional<Company> optionalCompany = companyRepository.findById(id);
+        if (optionalCompany.isPresent()) {
+            return optionalCompany.get();
+        }
+        log.error("Company not found by id.");
+        throw new CompanyNotFoundException("There is no company with id number " + id);
     }
 
 }
