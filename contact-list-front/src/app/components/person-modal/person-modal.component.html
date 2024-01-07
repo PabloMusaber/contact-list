@@ -1,0 +1,47 @@
+<div class="modal-content-category">
+    <div class="modal-header d-flex px-4">
+        <div>
+            <h2>Create Person</h2>
+        </div>
+        <div class="ms-auto">
+            <button type="button" class="btn btn-link" (click)="dismissModal()">
+                <i class="fa-regular fa-circle-xmark"></i>
+            </button>
+        </div>
+    </div>
+    <div class="container">
+        <form [formGroup]="personForm" class="px-4">
+            <div class="form-group py-2">
+                <label class="titles" for="name">Name</label>
+                <input type="text" class="form-control" formControlName="name" placeholder="Name"
+                    style="font-family: Poppins; color: black;">
+            </div>
+
+            <div class="form-group py-2">
+                <label class="titles" for="color">Email</label>
+                <input type="text" class="form-control" formControlName="email" id="email" placeholder="Email"
+                    style="font-family: Poppins; color: black;">
+            </div>
+
+            <div class="form-group py-2">
+                <label class="titles" for="color">Mobile Number</label>
+                <input type="text" class="form-control" formControlName="mobileNumber" id="mobileNumber"
+                    placeholder="Mobile number" style="font-family: Poppins; color: black;">
+            </div>
+
+            <div class="form-group py-2">
+                <label class="titles" for="color">City</label>
+                <input type="text" class="form-control" formControlName="city" id="city" placeholder="City"
+                    style="font-family: Poppins; color: black;">
+            </div>
+        </form>
+    </div>
+
+    <div class="container">
+        <div class="px-4">
+            <button id="create-button" type="submit" class="btn btn-primary w-100 my-3" data-toggle="modal"
+                data-target="#exampleModal" [disabled]="personForm.invalid" (click)="createPerson()"><i
+                    class="fa-solid fa-check" style="color: #ffffff;"></i> Create company</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,34 @@
+<div class="modal-content-category">
+    <div class="modal-header d-flex px-4">
+        <div>
+            <h2>Add contact to {{ companyName }}</h2>
+        </div>
+        <div class="ms-auto">
+            <button type="button" class="btn btn-link" (click)="dismissModal()">
+                <i class="fa-regular fa-circle-xmark"></i>
+            </button>
+        </div>
+    </div>
+    <div class="container">
+        <form [formGroup]="addContactForm" class="px-4">
+            <div class="form-group py-2">
+                <label class="titles" for="name">Pick a person</label>
+                <select class="form-select" id="pais" formControlName="contactId" id="contactId"
+                    style="font-family: Poppins; color: black;">
+                    <option value="" disabled selected>Pick a contact</option>
+                    <option *ngFor="let person of people" [value]="person.id"> {{person.name}} |
+                        {{person.mobileNumber}} | {{person.email}}
+                    </option>
+                </select>
+            </div>
+        </form>
+    </div>
+
+    <div class="container">
+        <div class="px-4">
+            <button id="create-button" type="submit" class="btn btn-primary w-100 my-3" data-toggle="modal"
+                data-target="#exampleModal" [disabled]="addContactForm.invalid" (click)="addContact()"><i
+                    class="fa-solid fa-check" style="color: #ffffff;"></i> Add contact</button>
+        </div>
+    </div>
+</div>
